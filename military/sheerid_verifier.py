@@ -83,16 +83,25 @@ class SheerIDVerifier:
     def verify(self) -> Dict:
         try:
             # generate profile data
-            name = NameGenerator.generate()
-            first_name = name["first_name"]
-            last_name = name["last_name"]
-            email = generate_email()
-            birth_date = generate_birth_date()
-            discharge_date = generate_discharge_date(birth_date)
+            profile = NameGenerator.generate()
+            first_name = profile["first_name"]
+            last_name = profile["last_name"]
+            email = generate_email(first_name, last_name)
+            
+            # Use real dates and org if available (from real data), otherwise generate random
+            if profile.get("is_real"):
+                birth_date = profile.get("birth_date")
+                discharge_date = profile.get("discharge_date")
+                self.org_id = profile.get("organization_id", self.org_id)
+            else:
+                birth_date = generate_birth_date()
+                discharge_date = generate_discharge_date(birth_date)
+            
             org_name = config.ORGANIZATIONS.get(self.org_id, "Army")
 
             logger.info(
-                f"Military profile: {first_name} {last_name}, org {self.org_id} {org_name}, "
+                f"Military profile ({'REAL' if profile.get('is_real') else 'RANDOM'}): "
+                f"{first_name} {last_name}, org {self.org_id} {org_name}, "
                 f"birth {birth_date}, discharge {discharge_date}, email {email}"
             )
 

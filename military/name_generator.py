@@ -3,6 +3,7 @@ import random
 from datetime import date
 
 import military.config as config
+from military.data import REAL_VETERANS
 
 
 class NameGenerator:
@@ -165,18 +166,41 @@ class NameGenerator:
 
     @classmethod
     def generate(cls):
+        """
+        Generate random name or pick from REAL_VETERANS with 50% chance if available.
+        Returns dict with keys: first_name, last_name, full_name, (optional) birth_date, discharge_date, org_id
+        """
+        # 50% chance to use real data if available
+        if REAL_VETERANS and random.random() < 0.5:
+            veteran = random.choice(REAL_VETERANS)
+            first_name = cls._fmt(veteran["first_name"])
+            last_name = cls._fmt(veteran["last_name"])
+            return {
+                "first_name": first_name,
+                "last_name": last_name,
+                "full_name": f"{first_name} {last_name}",
+                "birth_date": veteran.get("birth_date"),
+                "discharge_date": veteran.get("discharge_date"),
+                "organization_id": veteran.get("organization_id"),
+                "is_real": True
+            }
+
         first_name_pattern = random.choice(cls.PATTERNS["first_name"])
         last_name_pattern = random.choice(cls.PATTERNS["last_name"])
         first_name = cls._fmt(cls._generate_component(first_name_pattern))
         last_name = cls._fmt(cls._generate_component(last_name_pattern))
-        return {"first_name": first_name, "last_name": last_name, "full_name": f"{first_name} {last_name}"}
+        return {"first_name": first_name, "last_name": last_name, "full_name": f"{first_name} {last_name}", "is_real": False}
 
 
-def generate_email():
+def generate_email(first_name=None, last_name=None):
     """Generate email generik (gmail/outlook) untuk profil veteran."""
-    name = NameGenerator.generate()
-    first = name["first_name"].lower()
-    last = name["last_name"].lower()
+    if not first_name or not last_name:
+        name = NameGenerator.generate()
+        first_name = name["first_name"]
+        last_name = name["last_name"]
+    
+    first = first_name.lower()
+    last = last_name.lower()
     rand = random.randint(1000, 9999)
     domains = ["gmail.com", "outlook.com", "hotmail.com", "yahoo.com", "icloud.com"]
     return f"{first}.{last}{rand}@{random.choice(domains)}"
