@@ -32,7 +32,8 @@ class MySQLDatabase:
             'charset': 'utf8mb4',
             'autocommit': False,
         }
-        logger.info(f"MySQL 数据库初始化: {self.config['user']}@{self.config['host']}/{self.config['database']}")
+        # 避免日志泄露敏感信息
+        logger.info("MySQL 数据库初始化")
         self.init_database()
 
     def get_connection(self):
@@ -55,6 +56,7 @@ class MySQLDatabase:
                     balance INT DEFAULT 1,
                     is_blocked TINYINT(1) DEFAULT 0,
                     invited_by BIGINT,
+                    language VARCHAR(5) DEFAULT 'en',
                     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                     last_checkin DATETIME NULL,
                     INDEX idx_username (username),
@@ -62,6 +64,14 @@ class MySQLDatabase:
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
                 """
             )
+            # 兼容旧表，确保 language 列存在
+            try:
+                cursor.execute(
+                    "ALTER TABLE users ADD COLUMN language VARCHAR(5) DEFAULT 'en'"
+                )
+                conn.commit()
+            except Exception:
+                conn.rollback()
 
             # 邀请记录表
             cursor.execute(
@@ -143,7 +153,8 @@ class MySQLDatabase:
             conn.close()
 
     def create_user(
-        self, user_id: int, username: str, full_name: str, invited_by: Optional[int] = None
+        self, user_id: int, username: str, full_name: str, invited_by: Optional[int] = None,
+        language: str = "en"
     ) -> bool:
         """创建新用户"""
         conn = self.get_connection()
@@ -152,10 +163,10 @@ class MySQLDatabase:
         try:
             cursor.execute(
                 """
-                INSERT INTO users (user_id, username, full_name, invited_by, created_at)
-                VALUES (%s, %s, %s, %s, NOW())
+                INSERT INTO users (user_id, username, full_name, invited_by, language, created_at)
+                VALUES (%s, %s, %s, %s, %s, NOW())
                 """,
-                (user_id, username, full_name, invited_by),
+                (user_id, username, full_name, invited_by, self._normalize_lang(language)),
             )
 
             if invited_by:
@@ -196,8 +207,8 @@ class MySQLDatabase:
             row = cursor.fetchone()
             
             if row:
-                # 创建新字典并转换datetime为ISO格式字符串
                 result = dict(row)
+                result['language'] = self._normalize_lang(result.get('language', 'en'))
                 if result.get('created_at'):
                     result['created_at'] = result['created_at'].isoformat()
                 if result.get('last_checkin'):
@@ -540,6 +551,48 @@ class MySQLDatabase:
             cursor.execute("SELECT user_id FROM users")
             rows = cursor.fetchall()
             return [row[0] for row in rows]
+        finally:
+            cursor.close()
+            conn.close()
+
+    def _normalize_lang(self, lang: Optional[str]) -> str:
+        """标准化语言代码"""
+        if not lang:
+            return "en"
+        val = str(lang).lower()
+        if val in ("en", "id", "zh"):
+            return val
+        if val.startswith("en"):
+            return "en"
+        if val.startswith(("id", "in")):
+            return "id"
+        if val.startswith(("zh", "cn")):
+            return "zh"
+        return "en"
+
+    def get_user_language(self, user_id: int) -> str:
+        """获取用户语言，默认返回 en"""
+        user = self.get_user(user_id)
+        if not user:
+            return "en"
+        return self._normalize_lang(user.get("language"))
+
+    def set_user_language(self, user_id: int, lang: str) -> bool:
+        """设置用户语言"""
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute(
+                "UPDATE users SET language = %s WHERE user_id = %s",
+                (self._normalize_lang(lang), user_id),
+            )
+            conn.commit()
+            return cursor.rowcount > 0
+        except Exception as e:
+            logger.error(f"更新用户语言失败: {e}")
+            conn.rollback()
+            return False
         finally:
             cursor.close()
             conn.close()
