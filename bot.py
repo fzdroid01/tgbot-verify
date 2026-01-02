@@ -14,6 +14,7 @@ from handlers.user_commands import (
     checkin_command,
     invite_command,
     use_command,
+    lang_command,
 )
 from handlers.verify_commands import (
     verify_command,
@@ -66,6 +67,7 @@ def main():
     application.add_handler(CommandHandler("qd", partial(checkin_command, db=db)))
     application.add_handler(CommandHandler("invite", partial(invite_command, db=db)))
     application.add_handler(CommandHandler("use", partial(use_command, db=db)))
+    application.add_handler(CommandHandler("lang", partial(lang_command, db=db)))
 
     # 注册验证命令
     application.add_handler(CommandHandler("verify", partial(verify_command, db=db)))
