@@ -15,6 +15,7 @@ from k12.sheerid_verifier import SheerIDVerifier as K12Verifier
 from spotify.sheerid_verifier import SheerIDVerifier as SpotifyVerifier
 from youtube.sheerid_verifier import SheerIDVerifier as YouTubeVerifier
 from Boltnew.sheerid_verifier import SheerIDVerifier as BoltnewVerifier
+from military.sheerid_verifier import SheerIDVerifier as MilitaryVerifier
 from utils.messages import get_insufficient_balance_message, get_verify_usage_message
 
 # 尝试导入并发控制，如果失败则使用空实现
@@ -539,6 +540,79 @@ async def verify5_command(update: Update, context: ContextTypes.DEFAULT_TYPE, db
         await processing_msg.edit_text(
             f"❌ 处理过程中出现错误：{str(e)}\n\n"
             f"已退回 {VERIFY_COST} 积分"
+        )
+
+
+async def getV6_command(update: Update, context: ContextTypes.DEFAULT_TYPE, db: Database):
+    """处理 /verify6 命令 - ChatGPT Military"""
+    user_id = update.effective_user.id
+
+    if db.is_user_blocked(user_id):
+        await update.message.reply_text("Anda diblokir, tidak bisa memakai fitur ini.")
+        return
+
+    if not db.user_exists(user_id):
+        await update.message.reply_text("Silakan /start dulu untuk registrasi.")
+        return
+
+    if not context.args:
+        await update.message.reply_text(get_verify_usage_message("/verify6", "ChatGPT Military"))
+        return
+
+    url = context.args[0]
+    user = db.get_user(user_id)
+    if user["balance"] < VERIFY_COST:
+        await update.message.reply_text(get_insufficient_balance_message(user["balance"]))
+        return
+
+    verification_id = MilitaryVerifier.parse_verification_id(url)
+    if not verification_id:
+        await update.message.reply_text("Tautan SheerID tidak valid, cek lagi.")
+        return
+
+    if not db.deduct_balance(user_id, VERIFY_COST):
+        await update.message.reply_text("Gagal memotong poin, coba lagi nanti.")
+        return
+
+    processing_msg = await update.message.reply_text(
+        "🚩 Memulai verifikasi ChatGPT Military...\n"
+        f"ID verifikasi: {verification_id}\n"
+        f"Dipotong {VERIFY_COST} poin\n\n"
+        "📤 Mengirim status militer dan data pribadi..."
+    )
+
+    semaphore = get_verification_semaphore("chatgpt_military")
+
+    try:
+        async with semaphore:
+            verifier = MilitaryVerifier(verification_id)
+            result = await asyncio.to_thread(verifier.verify)
+
+        db.add_verification(
+            user_id,
+            "chatgpt_military",
+            url,
+            "success" if result["success"] else "failed",
+            str(result),
+        )
+
+        if result["success"]:
+            msg = "✅ Verifikasi terkirim! Menunggu review SheerID.\n"
+            if result.get("redirect_url"):
+                msg += f"🔗 Tautan lanjut:\n{result['redirect_url']}"
+            await processing_msg.edit_text(msg)
+        else:
+            db.add_balance(user_id, VERIFY_COST)
+            await processing_msg.edit_text(
+                f"❌ Verifikasi gagal: {result.get('message', 'unknown error')}\n\n"
+                f"{VERIFY_COST} poin dikembalikan."
+            )
+    except Exception as e:
+        logger.error("Military verify error: %s", e)
+        db.add_balance(user_id, VERIFY_COST)
+        await processing_msg.edit_text(
+            f"❌ Terjadi error: {str(e)}\n\n"
+            f"{VERIFY_COST} poin dikembalikan."
         )
 
 

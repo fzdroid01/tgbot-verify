@@ -29,6 +29,7 @@
 | `/verify3` | Spotify Student | 学生认证 | ✅ 完整 | Spotify 学生订阅优惠 |
 | `/verify4` | Bolt.new Teacher | 教师认证 | ✅ 完整 | Bolt.new 教育优惠（自动获取 code）|
 | `/verify5` | YouTube Premium Student | 学生认证 | ⚠️ 半成品 | YouTube Premium 学生优惠（见下方说明）|
+| `/verify6` | ChatGPT Military | 军人认证 | 🚧 新增 | 需 programId & 文档上传逻辑按 military 模块 |
 
 > **⚠️ YouTube 认证特别说明**：
 > 
