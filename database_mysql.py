@@ -27,8 +27,8 @@ class MySQLDatabase:
             'host': os.getenv('MYSQL_HOST', 'localhost'),
             'port': int(os.getenv('MYSQL_PORT', 3306)),
             'user': os.getenv('MYSQL_USER', 'tgbot_user'),
-            'password': os.getenv('MYSQL_PASSWORD', 'your_password_here'),
-            'database': os.getenv('MYSQL_DATABASE', 'tgbot_verify'),
+            'password': os.getenv('MYSQL_PASSWORD', os.getenv('MYSQL_PASS', 'your_password_here')),
+            'database': os.getenv('MYSQL_DATABASE', os.getenv('MYSQL_DB', 'tgbot_verify')),
             'charset': 'utf8mb4',
             'autocommit': False,
         }
