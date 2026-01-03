@@ -167,11 +167,11 @@ class NameGenerator:
     @classmethod
     def generate(cls):
         """
-        Generate random name or pick from REAL_VETERANS with 50% chance if available.
+        Pick from REAL_VETERANS if available.
         Returns dict with keys: first_name, last_name, full_name, (optional) birth_date, discharge_date, org_id
         """
-        # 50% chance to use real data if available
-        if REAL_VETERANS and random.random() < 0.5:
+        # Always use real data if available
+        if REAL_VETERANS:
             veteran = random.choice(REAL_VETERANS)
             first_name = cls._fmt(veteran["first_name"])
             last_name = cls._fmt(veteran["last_name"])
@@ -185,6 +185,7 @@ class NameGenerator:
                 "is_real": True
             }
 
+        # Fallback only if no real data
         first_name_pattern = random.choice(cls.PATTERNS["first_name"])
         last_name_pattern = random.choice(cls.PATTERNS["last_name"])
         first_name = cls._fmt(cls._generate_component(first_name_pattern))

@@ -151,5 +151,215 @@ REAL_VETERANS = [
         "birth_date": "1934-08-13",
         "discharge_date": "2023-10-26",
         "organization_id": "4070"
+    },
+    {
+        "first_name": "WILLIS",
+        "last_name": "HAYCOCK",
+        "birth_date": "1940-12-12",
+        "discharge_date": "2023-08-01",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "MARK",
+        "last_name": "HEALY",
+        "birth_date": "1961-03-09",
+        "discharge_date": "2024-10-27",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "MATTHEW",
+        "last_name": "HEALY",
+        "birth_date": "1990-08-27",
+        "discharge_date": "2023-05-23",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JERRY",
+        "last_name": "HEBERT",
+        "birth_date": "1946-11-12",
+        "discharge_date": "2005-09-24",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "GARY",
+        "last_name": "HEFLIN",
+        "birth_date": "1946-05-25",
+        "discharge_date": "2006-01-10",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "LYNN",
+        "last_name": "HELFERD",
+        "birth_date": "1928-10-20",
+        "discharge_date": "2025-02-20",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "DENNIS",
+        "last_name": "HELSEL",
+        "birth_date": "1947-12-31",
+        "discharge_date": "2025-01-16",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "CLINTON",
+        "last_name": "HELTON",
+        "birth_date": "1929-12-25",
+        "discharge_date": "2023-10-19",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JAMES",
+        "last_name": "HENDERSON",
+        "birth_date": "1947-11-14",
+        "discharge_date": "2023-01-12",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "STEPHEN",
+        "last_name": "HENLEY",
+        "birth_date": "1925-11-27",
+        "discharge_date": "2025-06-07",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "WILLIAM",
+        "last_name": "HENRY",
+        "birth_date": "1945-12-16",
+        "discharge_date": "2025-09-08",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "KENNETH",
+        "last_name": "HERBERGER",
+        "birth_date": "1936-08-27",
+        "discharge_date": "2025-01-03",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "VINCENT",
+        "last_name": "HERBERT",
+        "birth_date": "1946-11-30",
+        "discharge_date": "2021-11-29",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "MARK",
+        "last_name": "HERRENBRUCK",
+        "birth_date": "1946-08-24",
+        "discharge_date": "2023-06-09",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JAMES",
+        "last_name": "HESSON",
+        "birth_date": "1931-11-28",
+        "discharge_date": "2024-02-24",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "GUSTAV",
+        "last_name": "HEYER",
+        "birth_date": "1941-08-30",
+        "discharge_date": "2016-03-12",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "WILLIAM",
+        "last_name": "HIGGINS",
+        "birth_date": "1944-12-05",
+        "discharge_date": "2023-09-22",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "EDWARD",
+        "last_name": "HILDEBRAND",
+        "birth_date": "1947-07-20",
+        "discharge_date": "2020-07-28",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "HUBERT",
+        "last_name": "HILL",
+        "birth_date": "1941-05-23",
+        "discharge_date": "2025-04-10",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "RAYMOND",
+        "last_name": "HILL",
+        "birth_date": "1939-09-18",
+        "discharge_date": "2023-04-16",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JOSEPH",
+        "last_name": "HOPKO",
+        "birth_date": "1947-01-25",
+        "discharge_date": "2023-12-30",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "LEIGH",
+        "last_name": "HOPP",
+        "birth_date": "1931-09-28",
+        "discharge_date": "2025-03-12",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JERRY",
+        "last_name": "HOPPER",
+        "birth_date": "1931-08-11",
+        "discharge_date": "2025-01-25",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "GREGORY",
+        "last_name": "HORAN",
+        "birth_date": "1949-01-22",
+        "discharge_date": "2021-11-06",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "CRAIG",
+        "last_name": "HORTEN",
+        "birth_date": "1948-08-19",
+        "discharge_date": "2025-09-03",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "ROBERT",
+        "last_name": "HOSTETTER",
+        "birth_date": "1953-05-11",
+        "discharge_date": "2025-01-19",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "DAVID",
+        "last_name": "HOTTEL",
+        "birth_date": "1934-09-03",
+        "discharge_date": "2024-01-30",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "LARRY",
+        "last_name": "HOUNTZ",
+        "birth_date": "1938-04-22",
+        "discharge_date": "2023-02-02",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JEREMIAH",
+        "last_name": "HOWALD",
+        "birth_date": "1927-11-19",
+        "discharge_date": "2020-09-23",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "MALCOLM",
+        "last_name": "HOWARD",
+        "birth_date": "1939-06-24",
+        "discharge_date": "2025-01-12",
+        "organization_id": "4070"
     }
 ]
