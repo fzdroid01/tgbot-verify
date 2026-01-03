@@ -361,5 +361,265 @@ REAL_VETERANS = [
         "birth_date": "1939-06-24",
         "discharge_date": "2025-01-12",
         "organization_id": "4070"
+    },
+    # Data baru dari pencarian huruf "A" - scraped 2026-01-03
+    {
+        "first_name": "CLAUDIA",
+        "last_name": "AAKER",
+        "birth_date": "1949-11-28",
+        "discharge_date": "2015-04-01",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "DONALD",
+        "last_name": "AAKER",
+        "birth_date": "1934-07-11",
+        "discharge_date": "2022-11-22",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "DENNIS",
+        "last_name": "AANDERUD",
+        "birth_date": "1943-01-18",
+        "discharge_date": "2021-12-20",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JACQUELINE",
+        "last_name": "AANENSON",
+        "birth_date": "1923-02-18",
+        "discharge_date": "2018-01-11",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "QUENTIN",
+        "last_name": "AANENSON",
+        "birth_date": "1921-04-21",
+        "discharge_date": "2008-12-28",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "DONALD",
+        "last_name": "AANERUD",
+        "birth_date": "1925-02-27",
+        "discharge_date": "1966-11-21",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "EDWARD",
+        "last_name": "AANSTOOS",
+        "birth_date": "1926-06-07",
+        "discharge_date": "1998-01-21",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "VIRGINIA",
+        "last_name": "AANSTOOS",
+        "birth_date": "1923-10-18",
+        "discharge_date": "2005-12-27",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JAMES",
+        "last_name": "AARESTAD",
+        "birth_date": "1924-12-03",
+        "discharge_date": "2022-01-13",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "ALBERT",
+        "last_name": "AARON",
+        "birth_date": "1927-07-20",
+        "discharge_date": "2013-01-26",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "ALICE",
+        "last_name": "AARON",
+        "birth_date": "1937-05-26",
+        "discharge_date": "2017-08-29",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "ALTON",
+        "last_name": "AARON",
+        "birth_date": "1913-09-07",
+        "discharge_date": "1999-06-05",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "DONALD",
+        "last_name": "AARON",
+        "birth_date": "1923-08-19",
+        "discharge_date": "1992-03-08",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "HAROLD",
+        "last_name": "AARON",
+        "birth_date": "1921-06-21",
+        "discharge_date": "1980-04-30",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JACK",
+        "last_name": "AARON",
+        "birth_date": "1933-09-11",
+        "discharge_date": "2019-01-24",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JEROME",
+        "last_name": "AARON",
+        "birth_date": "1921-02-18",
+        "discharge_date": "1986-09-09",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JUNE",
+        "last_name": "AARON",
+        "birth_date": "1919-06-18",
+        "discharge_date": "2008-02-13",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "LIESELOTTE",
+        "last_name": "AARON",
+        "birth_date": "1924-11-29",
+        "discharge_date": "2022-12-04",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "LILLIAN",
+        "last_name": "AARON",
+        "birth_date": "1914-06-07",
+        "discharge_date": "1997-06-13",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "MARGARET",
+        "last_name": "AARON",
+        "birth_date": "1925-05-01",
+        "discharge_date": "2022-06-22",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "MARIANNE",
+        "last_name": "AARON",
+        "birth_date": "1922-08-31",
+        "discharge_date": "2012-10-26",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "MAX",
+        "last_name": "AARON",
+        "birth_date": "1921-08-03",
+        "discharge_date": "1973-09-05",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "MONEITA",
+        "last_name": "AARON",
+        "birth_date": "1936-04-19",
+        "discharge_date": "2003-03-15",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "PATRICIA",
+        "last_name": "AARON",
+        "birth_date": "1922-01-29",
+        "discharge_date": "1987-04-14",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "ROBERT",
+        "last_name": "AARON",
+        "birth_date": "1924-04-12",
+        "discharge_date": "2017-03-08",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "ROY",
+        "last_name": "AARON",
+        "birth_date": "1929-11-17",
+        "discharge_date": "2007-06-02",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "RUTH",
+        "last_name": "AARON",
+        "birth_date": "1928-05-20",
+        "discharge_date": "2021-11-16",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "STANLEY",
+        "last_name": "AARON",
+        "birth_date": "1916-12-13",
+        "discharge_date": "1996-09-05",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "THOMAS",
+        "last_name": "AARON",
+        "birth_date": "1918-01-04",
+        "discharge_date": "2014-05-02",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "TITUS",
+        "last_name": "AARON",
+        "birth_date": "1932-07-15",
+        "discharge_date": "1979-10-24",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "WILLIAM",
+        "last_name": "AARON",
+        "birth_date": "1930-05-31",
+        "discharge_date": "1997-11-12",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "ERMA",
+        "last_name": "AARONS",
+        "birth_date": "1916-04-21",
+        "discharge_date": "2000-09-07",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "ROY",
+        "last_name": "AARONS",
+        "birth_date": "1929-07-26",
+        "discharge_date": "2020-01-15",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "ALBERT",
+        "last_name": "AARONSON",
+        "birth_date": "1940-11-15",
+        "discharge_date": "2021-10-27",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "LEONARD",
+        "last_name": "AARONSON",
+        "birth_date": "1917-07-14",
+        "discharge_date": "2008-02-13",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "RUTH",
+        "last_name": "AARONSON",
+        "birth_date": "1917-11-23",
+        "discharge_date": "2009-01-29",
+        "organization_id": "4070"
+    },
+    {
+        "first_name": "JORGEN",
+        "last_name": "AARSTAD",
+        "birth_date": "1920-08-13",
+        "discharge_date": "1993-06-06",
+        "organization_id": "4070"
     }
 ]

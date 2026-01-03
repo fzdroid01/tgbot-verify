@@ -1,9 +1,13 @@
 """Generator util untuk nama, email, dan tanggal untuk verifikasi ChatGPT Military."""
 import random
+import logging
 from datetime import date
 
 import military.config as config
 from military.data import REAL_VETERANS
+from military.used_identities import is_identity_burned, get_tracker
+
+logger = logging.getLogger(__name__)
 
 
 class NameGenerator:
@@ -165,31 +169,77 @@ class NameGenerator:
         return val.capitalize()
 
     @classmethod
-    def generate(cls):
+    def generate(cls, max_attempts: int = 100):
         """
-        Pick from REAL_VETERANS if available.
+        Pick from REAL_VETERANS if available, avoiding burned identities.
         Returns dict with keys: first_name, last_name, full_name, (optional) birth_date, discharge_date, org_id
+        
+        Args:
+            max_attempts: Jumlah maksimal percobaan untuk menemukan identitas yang belum burned
+        
+        Returns:
+            dict: Data identitas veteran
+            
+        Raises:
+            RuntimeError: Jika semua identitas sudah burned
         """
         # Always use real data if available
         if REAL_VETERANS:
-            veteran = random.choice(REAL_VETERANS)
-            first_name = cls._fmt(veteran["first_name"])
-            last_name = cls._fmt(veteran["last_name"])
-            return {
-                "first_name": first_name,
-                "last_name": last_name,
-                "full_name": f"{first_name} {last_name}",
-                "birth_date": veteran.get("birth_date"),
-                "discharge_date": veteran.get("discharge_date"),
-                "organization_id": veteran.get("organization_id"),
-                "is_real": True
-            }
+            # Buat salinan list untuk di-shuffle
+            available_veterans = REAL_VETERANS.copy()
+            random.shuffle(available_veterans)
+            
+            # Cek berapa banyak identitas yang burned
+            tracker = get_tracker()
+            burned_count = tracker.get_burned_count()
+            total_count = len(REAL_VETERANS)
+            
+            # Coba temukan identitas yang belum burned
+            attempts = 0
+            for veteran in available_veterans:
+                attempts += 1
+                if attempts > max_attempts:
+                    break
+                    
+                first_name = cls._fmt(veteran["first_name"])
+                last_name = cls._fmt(veteran["last_name"])
+                birth_date = veteran.get("birth_date")
+                
+                # Cek apakah identitas ini sudah burned
+                if birth_date and is_identity_burned(first_name, last_name, birth_date):
+                    logger.debug(f"Skipping burned identity: {first_name} {last_name}")
+                    continue
+                
+                logger.info(f"Selected identity: {first_name} {last_name} (attempt {attempts}, burned: {burned_count}/{total_count})")
+                return {
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "full_name": f"{first_name} {last_name}",
+                    "birth_date": birth_date,
+                    "discharge_date": veteran.get("discharge_date"),
+                    "organization_id": veteran.get("organization_id"),
+                    "is_real": True
+                }
+            
+            # Jika semua identitas sudah burned, berikan pesan error
+            if burned_count >= total_count:
+                error_msg = (
+                    f"❌ SEMUA IDENTITAS SUDAH BURNED! "
+                    f"({burned_count}/{total_count} identitas sudah rate limited). "
+                    f"Silakan tambahkan data veteran baru ke military/data.py"
+                )
+                logger.error(error_msg)
+                raise RuntimeError(error_msg)
+            
+            # Jika masih ada yang tersedia tapi tidak ditemukan dalam max_attempts
+            logger.warning(f"Tidak menemukan identitas yang belum burned dalam {max_attempts} percobaan")
 
         # Fallback only if no real data
         first_name_pattern = random.choice(cls.PATTERNS["first_name"])
         last_name_pattern = random.choice(cls.PATTERNS["last_name"])
         first_name = cls._fmt(cls._generate_component(first_name_pattern))
         last_name = cls._fmt(cls._generate_component(last_name_pattern))
+        logger.info(f"Using generated identity (fallback): {first_name} {last_name}")
         return {"first_name": first_name, "last_name": last_name, "full_name": f"{first_name} {last_name}", "is_real": False}
 
 

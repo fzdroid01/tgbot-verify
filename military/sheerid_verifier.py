@@ -13,6 +13,7 @@ from .name_generator import (
     generate_discharge_date,
     generate_email,
 )
+from .used_identities import mark_identity_burned, mark_identity_used
 
 logging.basicConfig(
     level=logging.INFO,
@@ -81,6 +82,11 @@ class SheerIDVerifier:
         }
 
     def verify(self) -> Dict:
+        # Variabel untuk menyimpan data identitas yang digunakan
+        first_name = None
+        last_name = None
+        birth_date = None
+        
         try:
             # generate profile data
             profile = NameGenerator.generate()
@@ -104,6 +110,10 @@ class SheerIDVerifier:
                 f"{first_name} {last_name}, org {self.org_id} {org_name}, "
                 f"birth {birth_date}, discharge {discharge_date}, email {email}"
             )
+            
+            # Tandai identitas sebagai sudah digunakan
+            if birth_date:
+                mark_identity_used(first_name, last_name, birth_date, self.verification_id)
 
             # step 1: collectMilitaryStatus
             step1_body = {"status": self.status}
@@ -112,6 +122,14 @@ class SheerIDVerifier:
                 f"{self.verification_id}/step/collectMilitaryStatus"
             )
             step1_data, step1_status = self._sheerid_request("POST", step1_url, step1_body)
+            
+            # Cek apakah ada error verificationLimitExceeded
+            if step1_status == 429 or (isinstance(step1_data, dict) and
+                "verificationLimitExceeded" in str(step1_data.get("errorIds", []))):
+                if birth_date:
+                    mark_identity_burned(first_name, last_name, birth_date, "verificationLimitExceeded")
+                raise Exception(f"verificationLimitExceeded - Identitas {first_name} {last_name} sudah burned")
+            
             if step1_status != 200:
                 raise Exception(f"collectMilitaryStatus gagal (status {step1_status}): {step1_data}")
 
@@ -120,7 +138,12 @@ class SheerIDVerifier:
                 submission_url = step1_data.get("submissionUrl")
                 current_step = step1_data.get("currentStep")
                 if current_step == "error":
-                    err = ", ".join(step1_data.get("errorIds", ["unknown error"]))
+                    error_ids = step1_data.get("errorIds", ["unknown error"])
+                    err = ", ".join(error_ids)
+                    # Cek apakah error adalah verificationLimitExceeded
+                    if "verificationLimitExceeded" in error_ids:
+                        if birth_date:
+                            mark_identity_burned(first_name, last_name, birth_date, "verificationLimitExceeded")
                     raise Exception(f"collectMilitaryStatus error: {err}")
             if not submission_url:
                 raise Exception("submissionUrl tidak ditemukan dari langkah pertama")
@@ -139,10 +162,23 @@ class SheerIDVerifier:
                 "metadata": self._build_metadata(),
             }
             step2_data, step2_status = self._sheerid_request("POST", submission_url, step2_body)
+            
+            # Cek apakah ada error verificationLimitExceeded di step 2
+            if step2_status == 429 or (isinstance(step2_data, dict) and
+                "verificationLimitExceeded" in str(step2_data.get("errorIds", []))):
+                if birth_date:
+                    mark_identity_burned(first_name, last_name, birth_date, "verificationLimitExceeded")
+                raise Exception(f"verificationLimitExceeded - Identitas {first_name} {last_name} sudah burned")
+            
             if step2_status != 200:
                 raise Exception(f"collectInactiveMilitaryPersonalInfo gagal (status {step2_status}): {step2_data}")
             if isinstance(step2_data, dict) and step2_data.get("currentStep") == "error":
-                err = ", ".join(step2_data.get("errorIds", ["unknown error"]))
+                error_ids = step2_data.get("errorIds", ["unknown error"])
+                err = ", ".join(error_ids)
+                # Cek apakah error adalah verificationLimitExceeded
+                if "verificationLimitExceeded" in error_ids:
+                    if birth_date:
+                        mark_identity_burned(first_name, last_name, birth_date, "verificationLimitExceeded")
                 raise Exception(f"collectInactiveMilitaryPersonalInfo error: {err}")
 
             redirect_url = step2_data.get("redirectUrl") if isinstance(step2_data, dict) else None
@@ -154,6 +190,14 @@ class SheerIDVerifier:
                 "redirect_url": redirect_url,
                 "status": step2_data,
             }
-        except Exception as e:
+        except RuntimeError as e:
+            # RuntimeError dari NameGenerator ketika semua identitas burned
             logger.error(f"❌ Military verify gagal: {e}")
             return {"success": False, "message": str(e), "verification_id": self.verification_id}
+        except Exception as e:
+            error_msg = str(e)
+            # Cek apakah error message mengandung verificationLimitExceeded
+            if "verificationLimitExceeded" in error_msg and birth_date:
+                mark_identity_burned(first_name, last_name, birth_date, "verificationLimitExceeded")
+            logger.error(f"❌ Military verify gagal: {e}")
+            return {"success": False, "message": error_msg, "verification_id": self.verification_id}
